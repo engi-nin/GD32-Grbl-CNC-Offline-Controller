@@ -1,4 +1,7 @@
+
 # GD32-Grbl-CNC-Offline-Controller
+
+<img width="742" height="543" alt="offline_F" src="https://github.com/user-attachments/assets/1f2cb006-bd56-49c3-8ffc-3b3b0a373804" />
 
 ## 概要
 GD32F303VCT6を搭載した、ＧＲＢＬ‐ＣＮＣ向けのオフライン制御端末用ファームウェアです。
@@ -15,6 +18,8 @@ GRBL1.1用のコントローラーとシリアル通信を行い、PCレスで�
 - **MCU:** GD32F303VCT6
 - **Display:** 1.8 inch TFT (ST7735)
 - **Interface:** SPI / UART / SD Card
+
+<img width="1851" height="1003" alt="offline_B" src="https://github.com/user-attachments/assets/69d65736-e0b9-4434-892f-5018ef693eb8" />
 
 ### ピンアサイン（主要部分）
 | 機能 | ピン番号 | 備考 |
