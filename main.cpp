@@ -90,8 +90,8 @@ int moveSpeed = 100;                 // 初期送り速度 100
 unsigned long okPressStartTime = 0;  // OKボタン用
 uint32_t totalFileBytes = 0;    // ファイルの総サイズ
 uint32_t sentFileBytes = 0;     // 送信済みのサイズ
-char lastSentGCode[32] = "";    // 最後に送った行
-char lastGrblResponse[32] = ""; // GRBLからの最後の返事
+char lastSentGCode[64] = "";    // 最後に送った行
+char lastGrblResponse[64] = ""; // GRBLからの最後の返事
 static char currentFileName[32]; // 選択されたファイル名を保持する配列
 char lineBuffer[64]; // Gコード1行分を溜めるバッファ（CNCの1行は通常50文字程度なので64で十分です）
 int lineIdx = 0;     // バッファのどこまで文字を入れたかを記録する添え字
@@ -1190,12 +1190,14 @@ void stopGCodeStream() {
     tft.setCursor(10, 90);
     if (resetConfirmed) {
         // 正常に停止・リセットされた場合
+        tft.fillRect(4, 27, 148, 57, 0x0000);// 前のメッセージを消す
         tft.setCursor(5,48);
         tft.setTextColor(0x07E0); // 緑
         tft.println(F("STOPPED & RESET OK "));
         //Serial2.println(F("G-Code Stream Stopped. GRBL Reset Confirmed."));
     } else {
         // リセットコマンドを送ったが反応がない場合
+        tft.fillRect(4, 27, 148, 57, 0x0000);// 前のメッセージを消す
         tft.setCursor(5,48);
         tft.setTextColor(0xF800); // 赤
         tft.println(F("STOPPED: GRBL NO RES "));
@@ -1254,16 +1256,32 @@ void updateSendingStatus(uint32_t current, uint32_t total, const char* lastSent,
         tft.setTextColor(0xFFE0); // 黄色
         tft.print(F("TX: "));
         
-        // 20文字制限での改行処理（ポインタによる高速処理）
+        // 最大3行分（最大60文字）の折り返し処理
         const char* p = lastSent;
         int len = strlen(lastSent);
+        
         if (len > 20) {
-            // 前半20文字を表示
-            for(int i=0; i<20; i++) tft.print(*p++);
-            // 改行して残りを表示
-            tft.setCursor(5, 38); // 10ピクセル下に移動
-            tft.println(p); 
+            // 【1行目】前半20文字を表示
+            for(int i = 0; i < 20; i++) tft.print(*p++);
+            
+            // 【2行目】10ピクセル下に移動して設定
+            tft.setCursor(5, 38); 
+            
+            if (len > 40) {
+                // 21〜40文字目を表示
+                for(int i = 0; i < 20; i++) tft.print(*p++);
+                
+                // 【3行目】さらに10ピクセル下に移動して設定
+                tft.setCursor(5, 48); 
+                
+                // 41文字目以降の残りを表示（もし60文字を超えるリスクがあれば、ここもforで20文字制限にできます）
+                tft.println(p); 
+            } else {
+                // 40文字以下なら残りをすべて2行目に出して終了
+                tft.println(p);
+            }
         } else {
+            // 20文字以下なら1行で終了
             tft.println(lastSent);
         }
 
