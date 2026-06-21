@@ -1267,9 +1267,9 @@ void updateSendingStatus(uint32_t current, uint32_t total, const char* lastSent,
             // 【2行目】10ピクセル下に移動して設定
             tft.setCursor(5, 38); 
             
-            if (len > 40) {
-                // 21〜40文字目を表示
-                for(int i = 0; i < 20; i++) tft.print(*p++);
+            if (len > 45) {
+                // 21〜45文字目を表示
+                for(int i = 0; i < 25; i++) tft.print(*p++);
                 
                 // 【3行目】さらに10ピクセル下に移動して設定
                 tft.setCursor(5, 48); 
@@ -1277,7 +1277,7 @@ void updateSendingStatus(uint32_t current, uint32_t total, const char* lastSent,
                 // 41文字目以降の残りを表示（もし60文字を超えるリスクがあれば、ここもforで20文字制限にできます）
                 tft.println(p); 
             } else {
-                // 40文字以下なら残りをすべて2行目に出して終了
+                // 45文字以下なら残りをすべて2行目に出して終了
                 tft.println(p);
             }
         } else {
