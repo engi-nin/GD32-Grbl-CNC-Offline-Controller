@@ -466,7 +466,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_Z2_MOVE") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G0 Z" + String(probeCtx.wallZ1 + 2.0f, 3);
+                    dynamicCmdBuffer = "G0 Z" + String(probeCtx.wallZ1 + 1.0f, 3);
                 }
                 else if (strcmp(cmdToSend, "D_Z2_RUN") == 0)
                 {
@@ -493,7 +493,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_X_PLUS_MOV") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G0 X-2.000";
+                    dynamicCmdBuffer = "G0 X-1.000";
                 }
                 else if (strcmp(cmdToSend, "D_X_PLUS_RUN2") == 0)
                 {
@@ -520,7 +520,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_X_MINUS_MOV") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G0 X2.000";
+                    dynamicCmdBuffer = "G0 X1.000";
                 }
                 else if (strcmp(cmdToSend, "D_X_MINUS_RUN2") == 0)
                 {
@@ -547,7 +547,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_Y_PLUS_MOV") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G0 Y-2.000";
+                    dynamicCmdBuffer = "G0 Y-1.000";
                 }
                 else if (strcmp(cmdToSend, "D_Y_PLUS_RUN2") == 0)
                 {
@@ -574,7 +574,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_Y_MINUS_MOV") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G0 Y2.000";
+                    dynamicCmdBuffer = "G0 Y1.000";
                 }
                 else if (strcmp(cmdToSend, "D_Y_MINUS_RUN2") == 0)
                 {
@@ -603,7 +603,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_CR_X_MOV") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G0 X-2.000";
+                    dynamicCmdBuffer = "G0 X-1.000";
                 }
                 else if (strcmp(cmdToSend, "D_CR_X2") == 0)
                 {
@@ -643,7 +643,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_CR_Y_MOV") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G0 Y-2.000";
+                    dynamicCmdBuffer = "G0 Y-1.000";
                 }
                 else if (strcmp(cmdToSend, "D_CR_Y4") == 0)
                 {
@@ -675,7 +675,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_IN_X1_BAK") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G91 G0 X" + String(2.0f, 3); // 相対位置でプロービングバック２ｍｍ
+                    dynamicCmdBuffer = "G91 G0 X" + String(1.0f, 3); // 相対位置でプロービングバック１ｍｍ
                 }
                 else if (strcmp(cmdToSend, "D_IN_X1_SLOW") == 0)
                 {
@@ -695,7 +695,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_IN_X2_BAK") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G91 G0 X" + String(- 2.0f, 3); // プロービングバック-2mm
+                    dynamicCmdBuffer = "G91 G0 X" + String(- 1.0f, 3); // プロービングバック-1mm
                 }
                 else if (strcmp(cmdToSend, "D_IN_X2_SLOW") == 0)
                 {
@@ -720,7 +720,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_IN_Y1_BAK") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G91 G0 Y" + String(2.0f, 3); // プロービングバック2ｍｍ
+                    dynamicCmdBuffer = "G91 G0 Y" + String(1.0f, 3); // プロービングバック1ｍｍ
                 }
                 else if (strcmp(cmdToSend, "D_IN_Y1_SLOW") == 0)
                 {
@@ -740,7 +740,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_IN_Y2_BAK") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G91 G0 Y" + String(-2.0f, 3); // プロービングバック2ｍｍ
+                    dynamicCmdBuffer = "G91 G0 Y" + String(-1.0f, 3); // プロービングバック1ｍｍ
                 }
                 else if (strcmp(cmdToSend, "D_IN_Y2_SLOW") == 0)
                 {
@@ -772,7 +772,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_OUT_X1_BAK") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G91 G0 X" + String(-2.0f, 3); // X-方向に2mm移動
+                    dynamicCmdBuffer = "G91 G0 X" + String(-1.0f, 3); // X-方向に1mm移動
                 }
                 else if (strcmp(cmdToSend, "D_OUT_X1_SLOW") == 0)
                 {
@@ -807,7 +807,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_OUT_X2_BAK") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G91 G0 X" + String( 2.0f, 3); // プロービングバック2ｍｍ
+                    dynamicCmdBuffer = "G91 G0 X" + String( 1.0f, 3); // プロービングバック1ｍｍ
                 }
                 else if (strcmp(cmdToSend, "D_OUT_X2_SLOW") == 0)
                 {
@@ -817,7 +817,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_OUT_X2_ESC") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G91 G0 X" + String( 2.0f, 3); // X+右側に2mm移動
+                    dynamicCmdBuffer = "G91 G0 X" + String( 1.0f, 3); // X+右側に1mm移動
                 }
                 else if (strcmp(cmdToSend, "D_OUT_X2_UP") == 0)
                 {
@@ -852,7 +852,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_OUT_Y1_BAK") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G91 G0 Y" + String(-2.0f, 3); // Y-方向に2mm移動
+                    dynamicCmdBuffer = "G91 G0 Y" + String(-1.0f, 3); // Y-方向に1mm移動
                 }
                 else if (strcmp(cmdToSend, "D_OUT_Y1_SLOW") == 0)
                 {
@@ -862,7 +862,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_OUT_Y1_ESC_Y") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G91 G0 Y" + String(-2.0f, 3); // Y-方向に2mm移動
+                    dynamicCmdBuffer = "G91 G0 Y" + String(-1.0f, 3); // Y-方向に1mm移動
                 }
                 else if (strcmp(cmdToSend, "D_OUT_Y1_UP") == 0)
                 {
@@ -887,7 +887,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_OUT_Y2_BAK") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G91 G0 Y" + String( 2.0f, 3); // Y軸をwallY1 + 2.0fの位置に移動
+                    dynamicCmdBuffer = "G91 G0 Y" + String( 1.0f, 3); // 1mmバック
                 }
                 else if (strcmp(cmdToSend, "D_OUT_Y2_SLOW") == 0)
                 {
@@ -897,7 +897,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_OUT_Y2_ESC_Y2") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G91 G0 Y" + String( 2.0f, 3); // Y+方向にwallY2 + 2.0fの位置に移動
+                    dynamicCmdBuffer = "G91 G0 Y" + String( 1.0f, 3); // 1ｍｍ逃がし
                 }
                 else if (strcmp(cmdToSend, "D_OUT_Y2_UP") == 0)
                 {
