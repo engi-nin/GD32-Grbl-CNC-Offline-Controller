@@ -503,7 +503,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_X_PLUS_RESET2") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G10 P1 L20 X0";
+                    dynamicCmdBuffer = "G10 P1 L20 X-" + String(toolRadius, 3);
                 }
 
                 // ─── X_MINUS プローブ (完全ピンポン方式・5ステップ) ───
@@ -530,7 +530,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_X_MINUS_RESET2") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G10 P1 L20 X0";
+                    dynamicCmdBuffer = "G10 P1 L20 X" + String(toolRadius, 3);
                 }
 
                 // ─── Y_PLUS プローブ (完全ピンポン方式・5ステップ) ───
@@ -557,7 +557,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_Y_PLUS_RESET2") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G10 P1 L20 Y0";
+                    dynamicCmdBuffer = "G10 P1 L20 Y-" + String(toolRadius, 3);
                 }
 
                 // ─── Y_MINUS プローブ (完全ピンポン方式・5ステップ) ───
@@ -584,7 +584,7 @@ void handleProbeStreaming()
                 else if (strcmp(cmdToSend, "D_Y_MINUS_RESET2") == 0)
                 {
                     probeCtx.activeState = STATE_IDLE;
-                    dynamicCmdBuffer = "G10 P1 L20 Y0";
+                    dynamicCmdBuffer = "G10 P1 L20 Y" + String(toolRadius, 3);
                 }
 
                 // ─── PROBE_XY_CORNER ───
