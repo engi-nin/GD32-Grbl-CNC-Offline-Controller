@@ -1,7 +1,7 @@
-
 # GD32-Grbl-CNC-Offline-Controller
 
-<img width="742" height="543" alt="offline_F" src="https://github.com/user-attachments/assets/1f2cb006-bd56-49c3-8ffc-3b3b0a373804" />
+<img width="742" height="425" alt="offline_F" src="https://github.com/user-attachments/assets/3b464e44-e479-4c2b-a59c-647a911e2f9a" />
+
 
 ## 概要
 GD32F303VCT6を搭載した、ＧＲＢＬ‐ＣＮＣ向けのオフライン制御端末用ファームウェアです。
