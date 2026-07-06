@@ -80,5 +80,7 @@ PA3(26)USART_1RX
 2. `platformio.ini` の設定を確認してください。
 3. ビルドしてターゲットボードに書き込みます。
 
+https://youtu.be/XpaJLY-EAXQ?si=iFZQxmoBzAtlG87i
+
 ## ライセンス
 MIT License 
