@@ -1,7 +1,7 @@
 #include "grbl_serial.h"
 
 // 静的メンバの初期化
-volatile uint8_t GrblSerial::rx_fifo[RX_BUF_SIZE];
+
 volatile uint16_t GrblSerial::rx_head = 0;
 volatile uint16_t GrblSerial::rx_tail = 0;
 
@@ -11,23 +11,6 @@ static String lastLineStr = "";
 static bool hasNewData = false;
 static char lineBuffer[128];
 static int lineIdx = 0;
-
-void GrblSerial::handleInterrupt() {
-    uint32_t sr = USART2->SR;
-    // RXNE（受信）または ORE（オーバーランエラー）を確認
-    if (sr & (USART_SR_RXNE | USART_SR_ORE)) {
-        uint8_t data = (uint8_t)(USART2->DR & 0xFF); // DRを読んでフラグクリア
-
-        // エラーがない場合のみバッファへ
-        if (!(sr & (USART_SR_FE | USART_SR_NE))) {
-            uint16_t next_head = (rx_head + 1) % RX_BUF_SIZE;
-            if (next_head != rx_tail) {
-                rx_fifo[rx_head] = data;
-                rx_head = next_head;
-            }
-        }
-    }
-}
 
 void GrblSerial::init(uint32_t baud) {
     // 1. Arduinoの標準シリアルを一度開始（ピン設定などを任せる）
@@ -41,13 +24,6 @@ void GrblSerial::sendByte(char c) {
 
 void GrblSerial::sendCommand(const char* cmd) {
     Serial2.println(cmd);
-}
-
-int GrblSerial::bfread() {
-    if (rx_head == rx_tail) return -1;
-    uint8_t c = rx_fifo[rx_tail];
-    rx_tail = (rx_tail + 1) % RX_BUF_SIZE;
-    return (int)c;
 }
 
 void GrblSerial::update() {
