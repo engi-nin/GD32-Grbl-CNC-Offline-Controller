@@ -22,7 +22,6 @@ public:
     const char* getLastResponse();
     
     // 割り込みハンドラからアクセスするために公開
-    static void handleInterrupt(); 
     const char* getNextLine();
     void clearBuffer(); // バッファを空にする関数を追加
     int getStoredLineCount();
@@ -38,7 +37,6 @@ private:
     uint8_t lineIdx = 0;
     bool dataValid = false;
     // 割り込みで使用するリングバッファ
-    static volatile uint8_t rx_fifo[RX_BUF_SIZE];
     static volatile uint16_t rx_head;
     static volatile uint16_t rx_tail;
     // リングバッファ構造
