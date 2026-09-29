@@ -391,7 +391,7 @@ void drawDetailedLog(const char* rawRes, int16_t x, int16_t y) {
 }
 //コンソールエラー表示
 void ConsoleLog(const char* log, uint16_t color, int16_t x, int16_t y) {
-    tft.fillRect(x,y,135,8,0x0000);
+    tft.fillRect(x,y,150,8,0x0000);
     tft.setTextSize(1);
     tft.setTextColor(color); 
     tft.setCursor(x, y); 
@@ -846,91 +846,104 @@ void handleJogButtons() {
         }
     }
 
-    // --- ESC ボタン (移動量切替 / 長押しで終了 / 短押しでcountリセット機能を追加) ---
+    // 共通の現在時刻を取得
+    unsigned long currentMillis = millis();
+
+    // --- ESC ボタン (移動量切替 / 長押しで終了) ---
     bool escNow = sw.isPressed(EXIT);
+    static unsigned long lastEscClickTime = 0; // チャタリング防止用の最終操作時間記録
+
     if (escNow) {
         if (!escIsBeingPressed) {
-            escPressStartTime_ex = millis();
-            escIsBeingPressed = true;
-            isEscLongTargetReached = false;
-        } else if (!isEscLongTargetReached && (millis() - escPressStartTime_ex > LONG_PRESS_MS)) {
+            // 直前の操作から80ms以内の再入力を無視する（デバウンス）
+            if (currentMillis - lastEscClickTime > 80) {
+                escPressStartTime_ex = currentMillis;
+                escIsBeingPressed = true;
+                isEscLongTargetReached = false;
+            }
+        } else if (!isEscLongTargetReached && (currentMillis - escPressStartTime_ex > LONG_PRESS_MS)) {
             drawMyButton(75, 69, 20, 16, "ESC", BTN_SEND); // 長押し確定色
             isEscLongTargetReached = true;
         }
     } 
     else if (!escNow && escIsBeingPressed) {
         drawMyButton(75, 69, 20, 16, "ESC", BTN_SEND); 
-        unsigned long duration = millis() - escPressStartTime_ex;
+        unsigned long duration = currentMillis - escPressStartTime_ex;
 
         if (duration > LONG_PRESS_MS) {
             // 【長押し】メニュー画面へ
             currentMode = MODE_MENU; 
             drawMenuUI();
-            // 💡 メニュー画面へ行くときは、古い画面のボタンリセットや状態更新は「一切しない」
             escIsBeingPressed = false;
             isEscLongTargetReached = false;
+            lastEscClickTime = currentMillis; // 操作時間を更新
             delay(50); 
-            return; // 💡 この関数の処理をここで完全に切り上げる
+            return; 
         } else {
             // 【短押し】移動量の切り替え
-            if (moveDistance == 0.01f)      moveDistance = 0.1f;
+            if (moveDistance == 0.01f)       moveDistance = 0.1f;
             else if (moveDistance == 0.1f)  moveDistance = 1.0f;
             else if (moveDistance == 1.0f)  moveDistance = 10.0f;
             else                            moveDistance = 0.01f;
            
             updateStatusDisplay();
-           
         }
         drawMyButton(75, 69, 20, 16, "ESC", BTN_PRIMARY);
         escIsBeingPressed = false;
         isEscLongTargetReached = false;
+        lastEscClickTime = currentMillis; // 操作時間を更新
     }
 
-    // --- OKボタン (短押し：速度切替 / 長押し：countリセット) ---
+    // --- OKボタン (短押し：速度切替 / 長押し：スピンドル切替) ---
     bool okNow = sw.isPressed(OK);
+    static unsigned long lastOkClickTime = 0; // チャタリング防止用の最終操作時間記録
 
-    if (okNow && !okIsBeingPressed) {
-    // ボタンが押された瞬間
-    okPressStartTime = millis();
-    okIsBeingPressed = true;
-    drawMyButton(40, 46, 20, 16, "OK", BTN_SEND); // 押下中の色
+    if (okNow) {
+        if (!okIsBeingPressed) {
+            // 直前の操作から80ms以内の再入力を無視する（デバウンス）
+            if (currentMillis - lastOkClickTime > 80) {
+                okPressStartTime = currentMillis;
+                okIsBeingPressed = true;
+                drawMyButton(40, 46, 20, 16, "OK", BTN_SEND); // 押下中の色
+            }
+        }
     } 
     else if (!okNow && okIsBeingPressed) {
-    // ボタンが離された瞬間
-    unsigned long duration = millis() - okPressStartTime;
+        unsigned long duration = currentMillis - okPressStartTime;
 
-    if (duration > LONG_PRESS_MS) {
-        // 【長押し】スピンドル状態の反転
-        if (!isSpindleOn) {
-            grbl.sendCommand("M3 S200");
-            updateDebugConsole("TX: M3 S200 (ON)");
-            drawMyButton(72, 24, 28, 16, "SPDL", BTN_ENABLED);
-            isSpindleOn = true;
-        } else {
-            grbl.sendCommand("M5");
-            updateDebugConsole("TX: M5 (OFF)");
-            drawMyButton(72, 24, 28, 16, "SPDL", BTN_DISABLED);
-            isSpindleOn = false;
-        }
-        updateStatusDisplay();
-    } else {
-        // 【短押し】送り速度(F)の切り替え
-        moveSpeed += 50;
-        if (moveSpeed > 500) moveSpeed = 50;
-        updateDebugConsole("Feed: " + String(moveSpeed));
-        updateStatusDisplay();
-    }
-    
-    // ボタン表示を元に戻す
-    drawMyButton(40, 46, 20, 16, "OK", BTN_ENABLED);
-    okIsBeingPressed = false;
-}
-
-    static uint32_t lastUpdate = 0;//ステータス時間更新
-        if (millis() - lastUpdate > 300) {
+        if (duration > LONG_PRESS_MS) {
+            // 【長押し】スピンドル状態の反転
+            if (!isSpindleOn) {
+                grbl.sendCommand("M3 S200");
+                updateDebugConsole("TX: M3 S200 (ON)");
+                drawMyButton(72, 24, 28, 16, "SPDL", BTN_ENABLED);
+                isSpindleOn = true;
+            } else {
+                grbl.sendCommand("M5");
+                updateDebugConsole("TX: M5 (OFF)");
+                drawMyButton(72, 24, 28, 16, "SPDL", BTN_DISABLED);
+                isSpindleOn = false;
+            }
             updateStatusDisplay();
-            lastUpdate = millis();
+        } else {
+            // 【短押し】送り速度(F)の切り替え
+            moveSpeed += 50;
+            if (moveSpeed > 500) moveSpeed = 50;
+            updateDebugConsole("Feed: " + String(moveSpeed));
+            updateStatusDisplay();
         }
+        
+        // ボタン表示を元に戻す
+        drawMyButton(40, 46, 20, 16, "OK", BTN_ENABLED);
+        okIsBeingPressed = false;
+        lastOkClickTime = currentMillis; // 操作時間を更新
+    }
+
+    static uint32_t lastUpdate = 0; // ステータス時間更新
+    if (currentMillis - lastUpdate > 300) {
+        updateStatusDisplay();
+        lastUpdate = currentMillis;
+    }
 }
 // 許可されたコマンドかどうかを判定する関数
 bool isAllowed(char* line) {
