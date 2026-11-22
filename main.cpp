@@ -1203,14 +1203,14 @@ void stopGCodeStream() {
     tft.setCursor(10, 90);
     if (resetConfirmed) {
         // 正常に停止・リセットされた場合
-        tft.fillRect(4, 27, 148, 57, 0x0000);// 前のメッセージを消す
+        tft.fillRect(4, 27, 151, 57, 0x0000);// 前のメッセージを消す
         tft.setCursor(5,48);
         tft.setTextColor(0x07E0); // 緑
         tft.println(F("STOPPED & RESET OK "));
         //Serial2.println(F("G-Code Stream Stopped. GRBL Reset Confirmed."));
     } else {
         // リセットコマンドを送ったが反応がない場合
-        tft.fillRect(4, 27, 148, 57, 0x0000);// 前のメッセージを消す
+        tft.fillRect(4, 27, 151, 57, 0x0000);// 前のメッセージを消す
         tft.setCursor(5,48);
         tft.setTextColor(0xF800); // 赤
         tft.println(F("STOPPED: GRBL NO RES "));
@@ -1262,7 +1262,7 @@ void updateSendingStatus(uint32_t current, uint32_t total, const char* lastSent,
     // 文字列が前回と異なる場合のみ描画処理を行う
     if (strcmp(lastSent, prevSent) != 0 || strcmp(lastRecv, prevRecv) != 0) {
         // コンソール領域のクリア
-        tft.fillRect(4, 27, 148, 57, 0x0000); 
+        tft.fillRect(4, 27, 151, 57, 0x0000); 
         
         // --- TX (送信Gコード) の描画 ---
         tft.setCursor(5, 28);
@@ -1321,7 +1321,7 @@ void updateSendingStatus(uint32_t current, uint32_t total, const char* lastSent,
 // Ｇコード送信中のメインループ処理
 void handleSendingMode() {
     static uint32_t initStartTime = 0; 
-    const uint32_t SEND_TIMEOUT_MS = 60000;
+    const uint32_t SEND_TIMEOUT_MS = 600000; // 10分
     const uint32_t INIT_TIMEOUT_MS = 5000; 
 
     // --- 1. 受信処理：リングバッファの更新 ---
@@ -1406,7 +1406,7 @@ void handleSendingMode() {
             isWaitingInitialResponse = false;
             isStreaming = true;
             lastOkTime = millis();
-            tft.fillRect(4, 27, 148, 57, 0x0000);
+            tft.fillRect(4, 27, 151, 57, 0x0000);
             tft.setCursor(5,30);
             tft.setTextColor(0x07E0);
             tft.println(F("GRBL Ready."));
